@@ -1,0 +1,109 @@
+<mat-card class="calender_first">
+  <mat-toolbar color="primary">
+    <h2 class="headerSpan">Canendar Management</h2>
+  </mat-toolbar>
+
+  <mat-toolbar class="buttonsetToolbar">
+    <button class="singleButton" mat-stroked-button color="primary" (click)="redirect('view');"> Slot View
+    </button>
+    <button class="singleButton" mat-raised-button color="primary" (click)="redirect('event-list');"> Event Listing
+    </button>
+    <button class="singleButton" mat-raised-button color="accent" (click)="redirect('create');"> Create Availability
+    </button>
+    <button class="singleButton" mat-raised-button color="warn" (click)="redirect('sync-google');"> Sync with Google
+    </button>
+  </mat-toolbar>
+</mat-card>
+
+
+<div class="filter">
+
+  <!-- Update timezone -->
+  <mat-form-field appearance="outline" class="filter-box">
+    <mat-label>My timezone</mat-label>
+    <mat-select [(ngModel)]="filterOptions.timezone" (selectionChange)="onChangeTimezone($event)"
+                placeholder="Change timezone">
+      <mat-option *ngFor="let tz of libConfigData.timeZone;" [value]="tz.value">{{ tz.text }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Event Type -->
+  <!-- <mat-form-field appearance="outline" class="filter-box">
+    <mat-label>Event Type</mat-label>
+    <mat-select [(ngModel)]="filterOptions.eventType">
+      <mat-option *ngFor="let et of libConfigData.eventType;" [value]="et.value">{{ et.text }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+  <!-- Search by Date range -->
+  <mat-form-field appearance="outline" class="filter-box">
+    <mat-label>Search by date range</mat-label>
+    <input matInput [(ngModel)]="filterOptions.availableDates" placeholder="Date range" [satDatepicker]="picker2"
+           disabled>
+    <sat-datepicker #picker2 [rangeMode]="true" disabled="false"></sat-datepicker>
+    <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+  </mat-form-field>
+
+  <!-- Search button -->
+  <button mat-stroked-button color="primary" class="m-r" (click)="search()">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <!-- Reset filter button -->
+  <button mat-stroked-button color="primary" class="m-l" (click)="resetFilter()" matTooltip="Reset filter">
+    <mat-icon>rotate_right</mat-icon>
+  </button>
+
+
+  <!-- -------------------------- Pagination start ------------------------ -->
+  <div class="pagination">
+    <button mat-icon-button (click)="pageStep('prev')">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-label>
+      <b *ngIf="page.total_record == 0">No event slot found</b>
+      <b *ngIf="page.total_record != 0">Showing results {{page.start}} - {{page.end}} of {{page.total_record}}</b>
+    </mat-label>
+    <button mat-icon-button (click)="pageStep('next')">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+
+    <br>
+    <mat-label class="sample_label">Items/page:</mat-label> &nbsp;
+    <mat-select class="selectPageCount" [(ngModel)]="itemCount" (selectionChange)="onChangePageCount()">
+      <mat-option [value]="20">20</mat-option>
+      <mat-option [value]="50">50</mat-option>
+      <mat-option [value]="100">100</mat-option>
+      <mat-option [value]="200">200</mat-option>
+    </mat-select>
+
+    <mat-label class="sample_label">Page:</mat-label> &nbsp;
+    <mat-select class="selectPageCount" [(ngModel)]="jumpToPageNumber" (selectionChange)="jumpToPage()">
+      <mat-option *ngFor="let i of arrPage" [value]="i - 1">
+        {{i}}
+      </mat-option>
+    </mat-select>
+
+  </div>
+  <!-- ------------------------- Pagination end ------------------------- -->
+
+</div>
+<!-- Progress bar -->
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<!-- Listing starts -->
+<div class="slotview">
+  <mat-card class="example-card" *ngFor="let data of libConfigData.responseData">
+    <mat-card-content>
+      <p><b>{{data.event_title}}</b></p>
+      <p><b>Details:</b> {{data.description}}</p>
+      <p><b>Date:</b> {{data.startdate}} &nbsp; <b>Slot:</b> {{data.slot}} - {{data.slot_end_time}}</p>
+      <p><b>Timezone:</b> {{data.timezoneName}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button (click)="bookEvent()">Book Now</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

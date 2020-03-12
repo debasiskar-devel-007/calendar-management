@@ -1,0 +1,71 @@
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.slotview {
+  background-color: #f4f3f8;
+  padding: 2% 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+mat-card {
+  margin: 5px;
+  width: 30%;
+}
+
+b {
+  font-weight: 500;
+}
+
+mat-card-content {
+  font-size: 15px;
+}
+
+.filter {
+  align-content: center;
+}
+
+.filter-box {
+  width: 200px;
+  margin-bottom: auto;
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.filter-box :disabled {
+  color: #000;
+  border-color: lightgray;
+}
+
+.m-r {
+  margin-right: 6px;
+}
+
+.m-l {
+  margin-left: 6px;
+}
+
+.pagination {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  width: fit-content;
+  display: inline-block;
+  float: right;
+  font-size: 15px;
+  padding: 5px;
+}
+
+.selectPageCount {
+  width: 45px;
+}
+
+.sample_label {
+  margin-left: 12px;
+}

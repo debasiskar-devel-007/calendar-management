@@ -1,0 +1,83 @@
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border-left: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+}
+
+.table th {
+  padding: 5px;
+  border-right: 0.05em solid #dee2e6;
+  font-size: 14px;
+  background-color: lightgray;
+  color: #000;
+}
+
+.table td {
+  padding: 5px;
+  border-right: 0.05em solid #dee2e6;
+  font-size: 14px;
+  max-width: 200px;
+}
+
+mat-card {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  border: 0.05em solid #dee2e6;
+  width: fit-content;
+  border-radius: 5px;
+}
+
+.btn-action-left {
+  border: 0.05em solid #dee2e6;
+  border-radius: 5px 0px 0px 5px;
+}
+
+.btn-action-right {
+  border: 0.05em solid #dee2e6;
+  border-radius: 0px 5px 5px 0px;
+}
+
+.btn-action-middle {
+  border: 0.05em solid #dee2e6;
+}
+
+mat-chip {
+  font-size: x-small;
+  padding: 6px;
+  min-height: 20px;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  pointer-events: none;
+}
+
+.filter-box {
+  width: 200px;
+  margin-bottom: auto;
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.filter-box :disabled {
+  color: #000;
+  border-color: lightgray;
+}
+
+.m-r {
+  margin-right: 6px;
+}
+
+.m-l {
+  margin-left: 6px;
+}
+
+b {
+  font-weight: 500;
+}

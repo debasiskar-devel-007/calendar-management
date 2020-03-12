@@ -1,0 +1,149 @@
+<mat-card>
+
+  <div *ngIf="libConfigData.responseData.length > 0">
+
+    <!-- Search by event title -->
+    <mat-form-field appearance="outline" class="filter-box">
+      <mat-label>Search by event title</mat-label>
+      <input matInput placeholder="Event title" (keydown)="onKeyDown($event)" [(ngModel)]="filterOptions.eventTitle">
+    </mat-form-field>
+
+    <!-- Search by available days -->
+    <mat-form-field appearance="outline" class="filter-box">
+      <mat-label>Available Days</mat-label>
+      <mat-select [formControl]="days" multiple>
+        <mat-option *ngFor="let day of dayList" [value]="day">{{day}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Search by event type -->
+    <mat-form-field appearance="outline" class="filter-box">
+      <mat-label>Event Type</mat-label>
+      <mat-select [formControl]="eventType">
+        <mat-option *ngFor="let et of libConfigData.eventType;" [value]="et.value">{{ et.text }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Search by Date range -->
+    <mat-form-field appearance="outline" class="filter-box">
+      <mat-label>Search by date range</mat-label>
+      <input matInput [(ngModel)]="filterOptions.avilableDates" placeholder="Date range" [satDatepicker]="picker2"
+             disabled>
+      <sat-datepicker #picker2 [rangeMode]="true" disabled="false"></sat-datepicker>
+      <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+    </mat-form-field>
+
+
+    <button mat-stroked-button color="primary" class="m-r" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <button mat-stroked-button color="primary" class="m-l" (click)="resetFilter()" matTooltip="Reset filter">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+
+    <button class="singleButton m-l" mat-raised-button color="accent" (click)="redirect('create');">
+      Create Availability
+    </button>
+  </div>
+  <button class="singleButton m-l" mat-raised-button color="accent" (click)="redirect('create');"
+          *ngIf="libConfigData.responseData.length < 1"> Create Availability
+  </button>
+
+
+  <!-- Progress bar -->
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+  <br>
+  <div style="width: 100%; text-align: center">
+  <mat-label *ngIf="libConfigData.responseData.length < 1">No data found</mat-label>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="table" *ngIf="libConfigData.responseData.length > 0">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> #</th>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{ i + 1 }} </td>
+    </ng-container>
+
+    <!-- title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Event Title</th>
+      <td mat-cell *matCellDef="let element"> {{element.event_title}} </td>
+    </ng-container>
+
+    <!-- description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Decsription</th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <!-- schedule Column -->
+    <ng-container matColumnDef="schedule">
+      <th mat-header-cell *matHeaderCellDef> Schedule</th>
+      <td mat-cell *matCellDef="let element; let i=index;">
+        <b>Start Date:</b> {{element.start_date}}
+        <br> <b>End date:</b> {{element.end_date}}
+        <br> <b>Start Time:</b> {{element.start_time}} <b>End Time:</b> {{element.end_time}}
+        <br> <b>Slot time:</b> {{element.timespan}}
+
+        <mat-chip-list aria-label="Available Days">
+          <mat-chip [ngStyle]="tableData[i].sun ? {'background-color':'#77d83f'} : {}">S
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].mon ? {'background-color':'#77d83f'} : {}">M
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].tues ? {'background-color':'#77d83f'} : {}">T
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].wed ? {'background-color':'#77d83f'} : {}">W
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].thurs ? {'background-color':'#77d83f'} : {}">T
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].fri ? {'background-color':'#77d83f'} : {}">F
+          </mat-chip>
+          <mat-chip [ngStyle]="tableData[i].sat ? {'background-color':'#77d83f'} : {}">S
+          </mat-chip>
+        </mat-chip-list>
+      </td>
+    </ng-container>
+
+    <!-- eventType Column -->
+    <ng-container matColumnDef="event_type">
+      <th mat-header-cell *matHeaderCellDef> Event Type</th>
+      <td mat-cell *matCellDef="let element"> {{libConfigData.eventType[element.event_type - 1].text}} </td>
+    </ng-container>
+
+    <!-- status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status</th>
+      <td mat-cell *matCellDef="let element"> {{element.status == 1 ? 'Active' : 'Inactive'}} </td>
+    </ng-container>
+
+    <!-- Event created by -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Created by</th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action</th>
+      <td mat-cell *matCellDef="let element; let i=index;">
+        <div class="btn-group">
+          <button mat-button type="button" color="primary" class="btn-action-left" (click)="editEvent(element)">
+            <i class="material-icons"> edit </i>
+          </button>
+          <button mat-button type="button" color="warn" class="btn-action-right" (click)="deleteEvent(element._id, i)">
+            <i class="material-icons"> delete </i>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                 *ngIf="libConfigData.responseData.length > 0"></mat-paginator>
+</mat-card>

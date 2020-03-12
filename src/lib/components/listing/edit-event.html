@@ -1,0 +1,111 @@
+<div class="full-width">
+  <mat-label class="modal-title">Edit Availability</mat-label>
+  <button class="btn-modal-close" (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="edit-event-dialog">
+
+  <form [formGroup]="addAvailabilityForm">
+    <mat-form-field appearance="legacy" class="modal-input full-width">
+      <mat-label>Event Title</mat-label>
+      <input matInput placeholder="Event Title" formControlName="event_title">
+    </mat-form-field>
+
+    <!-- Event Type Input -->
+    <mat-form-field appearance="legacy" class="modal-input m-r">
+      <mat-label>Event Type</mat-label>
+      <mat-select formControlName="event_type">
+        <mat-option *ngFor="let et of data.libConfigData.eventType;" [value]="et.value">{{ et.text }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Time Zone Input -->
+    <mat-form-field appearance="legacy" class="modal-input m-l">
+      <mat-label>Time Zone</mat-label>
+      <mat-select formControlName="timezone">
+        <mat-option *ngFor="let tz of data.libConfigData.timeZone;" [value]="tz.value">{{ tz.text }}
+        </mat-option>
+      </mat-select>
+
+      <!-- Error Message -->
+      <!-- <mat-error *ngIf="!addAvailiabiltyForm.controls['timezone'].valid && addAvailiabiltyForm.controls['timezone'].errors.required">
+          Time Span is required.</mat-error> -->
+    </mat-form-field>
+
+    <br>
+
+    <!-- Event details Input -->
+    <mat-form-field class="modal-input full-width m-r">
+      <textarea matInput placeholder="Event Details" formControlName="description"></textarea>
+    </mat-form-field>
+
+
+    <br>
+
+    <!-- Week days Input -->
+    <mat-label>Available Week Days</mat-label>
+    <br>
+    <mat-checkbox formControlName="sun">Sun</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="mon">Mon</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="tues">Tues</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="wed">Wed</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="thurs">Thurs</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="fri">Fri</mat-checkbox> &nbsp;
+    <mat-checkbox formControlName="sat">Sat</mat-checkbox>
+
+    <br>
+
+    <!-- Date avilable Input -->
+    <mat-form-field class="modal-input m-r">
+      <input matInput [(ngModel)]="dateRange" placeholder="Available Dates" [ngModelOptions]="{standalone: true}"
+             [satDatepicker]="picker">
+      <sat-datepicker #picker [rangeMode]="true">
+      </sat-datepicker>
+      <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+    </mat-form-field>
+
+    <!-- Time span -->
+    <mat-form-field class="modal-input m-l">
+      <mat-label>Time Span</mat-label>
+      <mat-select formControlName="timespan">
+        <mat-option *ngFor="let ts of data.libConfigData.timeSpan;" [value]="ts.value">{{ ts.text }}
+        </mat-option>
+      </mat-select>
+
+      <!-- Error Message -->
+      <!-- <mat-error *ngIf="!addAvailiabiltyForm.controls['timespan'].valid && addAvailiabiltyForm.controls['timespan'].errors.required">
+          Time Span is required.</mat-error> -->
+    </mat-form-field>
+
+    <br>
+
+    <!-- Time picker -->
+    <span class="time-picker modal-input">
+            <!-- Time Picker start time -->
+            <material-timepicker class="modal-input" color="primary" label="Start Time" appearance="standard"
+                                 (change)="onChangeHourS($event)" [userTime]="slotTimeStart" revertLabel="Remove"
+                                 submitLabel="Ok">
+            </material-timepicker>
+    </span> &nbsp;
+    <span class="time-picker modal-input">
+            <!-- Time Picker end time -->
+            <material-timepicker class="modal-input" color="primary" label="End Time" appearance="standard"
+                                 (change)="onChangeHourE($event)" [userTime]="slotTimeEnd" revertLabel="Remove"
+                                 submitLabel="Ok">
+            </material-timepicker>
+
+      <!-- Error Message -->
+      <!-- <mat-error *ngIf="errors.slotTimeStart == true || errors.slotTimeEnd  == true">Select Available Week
+          Days.</mat-error> -->
+        </span>
+
+    <button mat-raised-button color="primary" type="submit" class="full-width" (click)="formSubmit()">
+      Save
+    </button>
+
+  </form>
+
+</mat-dialog-content>

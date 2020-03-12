@@ -1,0 +1,116 @@
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+  border: 2px solid rgb(224, 218, 218);
+}
+
+.headerSpan {
+  text-align: center;
+  display: block;
+  margin: auto;
+}
+
+.darkToolbar {
+  background-color: black;
+}
+
+.gridListWrapper {
+  padding: 30px;
+}
+
+.buttonsetToolbar {
+  background-color: #f4f3f8;
+  text-align: center;
+  display: block;
+  padding-top: 10px;
+}
+
+.singleButton {
+  margin: 5px;
+  display: inline-block;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.headerSpan {
+  text-align: center;
+  display: block;
+  margin: auto;
+}
+
+.darkToolbar {
+  background-color: black;
+}
+
+.gridListWrapper {
+  padding: 30px;
+}
+
+.buttonsetToolbar {
+  background-color: #f4f3f8;
+  text-align: center;
+  display: block;
+  padding-top: 10px;
+}
+
+.singleButton {
+  margin: 5px;
+  display: inline-block;
+}
+
+.calender_first {
+  margin-bottom: 16px;
+}
+
+.title {
+  text-align: center;
+  background: #57abdc;
+  color: #fff;
+  padding: 16px;
+  margin: 0 16px;
+  margin-bottom: 20px;
+}
+
+.calendar_wrapper {
+  width: 60%;
+  margin: auto;
+  border: 1px solid #00ffb8;
+}
+
+.calendar_wrapper .event_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar_wrapper .event_wrapper .mat-form-field {
+  width: 100%;
+}
+
+.time_picker, .button_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time_picker .timer, .button_wrapper button {
+  width: 49%;
+}
+
+.button_wrapper {
+  margin-top: 20px;
+}
+
+.button_wrapper button {
+  padding: 5px;
+  border-radius: 0;
+}

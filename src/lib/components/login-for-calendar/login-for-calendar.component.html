@@ -1,0 +1,25 @@
+<mat-card>
+  <form [formGroup]="loginForm" (ngSubmit)="loginFormSubmit()">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Email" formControlName="email" (blur)="inputUntouched('email')">
+      <mat-error
+        *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].errors.required && loginForm.controls['email'].touched">
+        Email can not be blank
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-error *ngIf="!loginForm.controls['email'].valid && !loginForm.controls['email'].errors.required">
+      Please enter a valid email
+    </mat-error>
+    <mat-form-field>
+      <input matInput placeholder="Password" type="password" formControlName="password"
+             (blur)="inputUntouched('password')">
+      <mat-error
+        *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].errors.required && loginForm.controls['password'].touched">
+        Password can not be blank
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary">login</button>
+  </form>
+</mat-card>

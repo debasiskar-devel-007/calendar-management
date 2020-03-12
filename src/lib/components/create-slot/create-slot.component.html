@@ -1,0 +1,155 @@
+<mat-card class="calender_first">
+  <mat-toolbar color="primary">
+    <h2 class="headerSpan">Canendar Management</h2>
+  </mat-toolbar>
+
+  <mat-toolbar class="buttonsetToolbar">
+    <button class="singleButton" mat-raised-button color="primary" (click)="redirect('view');"> View Availability
+    </button>
+    <button class="singleButton" mat-raised-button color="accent" (click)="redirect('create');"> Create Availability
+    </button>
+    <button class="singleButton" mat-raised-button color="warn" (click)="redirect('sync-google');"> Sync with Google
+    </button>
+  </mat-toolbar>
+</mat-card>
+
+<mat-card-title class="title">Add/Edit Availability</mat-card-title>
+<mat-card class="calendar_wrapper">
+  <form [formGroup]="addAvailabilityForm" (ngSubmit)="formSubmit();">
+    <div class="example-container">
+      <!-- Event Title Input -->
+      <mat-form-field>
+        <input matInput formControlName="event_title" placeholder="Event Title">
+
+        <!-- Error Message -->
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['event_title'].valid && addAvailabilityForm.controls['event_title'].errors.required">
+          Event Title is required.
+        </mat-error>
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['event_title'].valid && addAvailabilityForm.controls['event_title'].errors.maxlength">
+          You have reached your maximum limit of characters allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Event details Input -->
+      <mat-form-field>
+        <textarea matInput formControlName="description" placeholder="Event Details"></textarea>
+
+        <!-- Error Message -->
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['description'].valid && addAvailabilityForm.controls['description'].errors.required">
+          Event Details is required.
+        </mat-error>
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['description'].valid && addAvailabilityForm.controls['description'].errors.maxlength">
+          You have reached your maximum limit of characters allowed.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Event Type Input -->
+      <mat-form-field>
+        <mat-label>Event Type</mat-label>
+        <mat-select formControlName="event_type">
+          <mat-option *ngFor="let et of libConfigData.eventType;" [value]="et.value">{{ et.text }}
+          </mat-option>
+        </mat-select>
+
+        <!-- Error Message -->
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['event_type'].valid && addAvailabilityForm.controls['event_type'].errors.required">
+          Event Type is required.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Date avilable Input -->
+      <mat-form-field>
+        <input matInput (blur)="onBlur()" [(ngModel)]="availableDates" [ngModelOptions]="{standalone: true}"
+               placeholder="Avilable Dates" [satDatepicker]="picker2">
+        <sat-datepicker #picker2 [rangeMode]="true">
+        </sat-datepicker>
+        <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+
+        <!-- Error Message -->
+        <mat-error *ngIf="errors.avilableDates">Avilable dates is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Week days Input -->
+      <h3>Available Week Days</h3>
+      <mat-checkbox formControlName="sun">Sunday</mat-checkbox>
+      <mat-checkbox formControlName="mon">Monday</mat-checkbox>
+      <mat-checkbox formControlName="tues">Tuesday</mat-checkbox>
+      <mat-checkbox formControlName="wed">Wednesday</mat-checkbox>
+      <mat-checkbox formControlName="thurs">Thursday</mat-checkbox>
+      <mat-checkbox formControlName="fri">Friday</mat-checkbox>
+      <mat-checkbox formControlName="sat">Saturday</mat-checkbox>
+
+      <mat-error *ngIf="errors.weekdaysError">Select Available Week Days.</mat-error>
+      <br/>
+
+      <!-- Time Span Input -->
+      <mat-form-field>
+        <mat-label>Time Span</mat-label>
+        <mat-select formControlName="timespan">
+          <mat-option *ngFor="let ts of libConfigData.timeSpan;" [value]="ts.value">{{ ts.text }}</mat-option>
+        </mat-select>
+
+        <!-- Error Message -->
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['timespan'].valid && addAvailabilityForm.controls['timespan'].errors.required">
+          Time Span is required.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Time Zone Input -->
+      <mat-form-field>
+        <mat-label>Time Zone</mat-label>
+        <mat-select formControlName="timezone">
+          <mat-option *ngFor="let tz of libConfigData.timeZone;" [value]="tz.value">{{ tz.text }}</mat-option>
+        </mat-select>
+
+        <!-- Error Message -->
+        <mat-error
+          *ngIf="!addAvailabilityForm.controls['timezone'].valid && addAvailabilityForm.controls['timezone'].errors.required">
+          Time Span is required.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Time picker -->
+      <span class="time_picker">
+        <!-- Time Picker start time -->
+        <material-timepicker class="timer" color="primary" label="Start Time" appearance="standard"
+                             [userTime]="slotTimeStart" (change)="onChangeHourS($event)" revertLabel="Remove"
+                             submitLabel="Ok">
+        </material-timepicker>
+
+        <!-- Time Picker end time -->
+        <material-timepicker class="timer" color="primary" label="End Time" appearance="standard"
+                             [userTime]="slotTimeEnd" (change)="onChangeHourE($event)" revertLabel="Remove"
+                             submitLabel="Ok">
+        </material-timepicker>
+
+        <!-- Error Message -->
+        <mat-error *ngIf="errors.slotTimeStart == true || errors.slotTimeEnd  == true">Time is not valid for the slot</mat-error>
+      </span>
+
+      <!-- Created by userid -->
+      <mat-form-field class="invisible">
+        <mat-label>User ID</mat-label>
+        <input matInput formControlName="userid" placeholder="User ID">
+      </mat-form-field>
+
+      <!-- Created by name -->
+      <mat-form-field class="invisible">
+        <mat-label>Created by</mat-label>
+        <input matInput formControlName="username" placeholder="User Name">
+      </mat-form-field>
+
+
+      <span class="button_wrapper">
+        <button mat-raised-button color="primary" type="submit">Save</button>
+        <button mat-raised-button color="warn" type="button" (click)="redirect('view');">Cancel</button>
+      </span>
+    </div>
+  </form>
+</mat-card>

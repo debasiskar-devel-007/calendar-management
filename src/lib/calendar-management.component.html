@@ -1,0 +1,21 @@
+<mat-card class="calender_first">
+  <mat-toolbar color="primary">
+    <h2 class="headerSpan">Canendar Management</h2>
+  </mat-toolbar>
+
+  <mat-toolbar class="buttonsetToolbar">
+    <button class="singleButton" mat-stroked-button color="primary" (click)="redirect('view');"> Slot View
+    </button>
+    <button class="singleButton" mat-raised-button color="primary" (click)="redirect('event-list');"> Event Listing
+    </button>
+    <button class="singleButton" mat-raised-button color="accent" (click)="redirect('create');"> Create Availability
+    </button>
+    <button class="singleButton" mat-raised-button color="warn" (click)="redirect('sync-google');"> Sync with Google
+    </button>
+  </mat-toolbar>
+</mat-card>
+
+
+<mat-card>
+  <lib-view-slot [configData]="libConfigData"></lib-view-slot>
+</mat-card>

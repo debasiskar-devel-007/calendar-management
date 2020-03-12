@@ -1,0 +1,6 @@
+<mat-label>Book Event</mat-label>
+
+<mat-form-field appearance="legacy" *ngFor="let formFieldData of data.libConfigData.bookEventFormFields">
+  <mat-label>{{formFieldData.label}}</mat-label>
+  <input *ngIf="formFieldData.type == 'input'" matInput placeholder="Event Title" formControlName="{{formFieldData.name}}">
+</mat-form-field>
